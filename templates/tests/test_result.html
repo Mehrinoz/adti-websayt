@@ -1,0 +1,325 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test natijalari - Andijon Davlat Tibbiyot Instituti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book.css' %}">
+    <style>
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .results-header {
+            text-align: center;
+            color: #0a3c26;
+            margin-bottom: 30px;
+        }
+        .results-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .results-header p {
+            font-size: 16px;
+            color: #666;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .stat-card.total {
+            border-top: 5px solid #19a685;
+        }
+        .stat-card.correct {
+            border-top: 5px solid #28a745;
+        }
+        .stat-card.wrong {
+            border-top: 5px solid #dc3545;
+        }
+        .stat-card.percentage {
+            border-top: 5px solid #ffc107;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0a3c26;
+        }
+        .stat-card.correct .stat-value {
+            color: #28a745;
+        }
+        .stat-card.wrong .stat-value {
+            color: #dc3545;
+        }
+        .stat-card.percentage .stat-value {
+            color: #ffc107;
+        }
+        .question-result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .question-number-result {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0a3c26;
+        }
+        .result-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .result-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .result-badge.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .question-text-result {
+            font-size: 16px;
+            color: #0a3c26;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .options-list li {
+            padding: 8px 0;
+            font-size: 15px;
+            color: #333;
+        }
+        .user-answer, .correct-answer {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .user-answer {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .user-answer.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .user-answer.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .correct-answer {
+            background: #d4edda;
+            color: #155724;
+        }
+        .back-button {
+            background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(25, 166, 133, 0.3);
+        }
+        .content {
+            padding: 20px;
+            height: calc(100vh - 20px);
+            overflow-y: auto;
+        }
+        .section-title {
+            font-size: 22px;
+            color: #0a3c26;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <footer class="top-footer">
+        <div class="footer_widget wow fadeInRightBig">
+            <h1>ANDIJON DAVLAT TIBBIYOT INSTITUTI</h1>
+        </div>
+    </footer>
+    <div class="container">
+        <div class="sidebar">
+            <header>
+                <div class="logo">
+                    <img src="{% static 'images/logo.png' %}" alt="Universitet logosi">
+                </div>
+                <h1>Davolash fakulteti</h1>
+            </header>
+            <nav>
+                <ul class="navbar-nav">
+                   {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="#" class="btn btn-outline-light nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Chiqish</a>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Bosh sahifa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'books' %}">Kitoblar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'test_list' %}">Testlar</a></li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a></li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light nav-link" href="{% url 'login' %}">Kirish</a>
+                    </li>
+                {% endif %}
+                </ul>
+            </nav>
+            <div class="social-icons">
+                <a href="https://t.me/adu_uz" class="icon"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.youtube.com/aduuz" class="icon"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/adu.uzb" class="icon"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2>Test natijalari</h2>
+                    <p>{{ test_session.category.name }} — Bo'lim {{ group_number }}</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card total">
+                        <div class="stat-label">Umumiy savollar</div>
+                        <div class="stat-value">{{ total }}</div>
+                    </div>
+                    <div class="stat-card correct">
+                        <div class="stat-label">To'g'ri javoblar</div>
+                        <div class="stat-value">{{ correct }}</div>
+                    </div>
+                    <div class="stat-card wrong">
+                        <div class="stat-label">Noto'g'ri javoblar</div>
+                        <div class="stat-value">{{ wrong }}</div>
+                    </div>
+                    <div class="stat-card percentage">
+                        <div class="stat-label">Foiz</div>
+                        <div class="stat-value">{{ percentage }}%</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Savollar tahlili</div>
+
+                {% if details %}
+                    {% for item in details %}
+                    <div class="question-result-card">
+                        <div class="question-result-header">
+                            <div class="question-number-result">
+                                Savol {{ forloop.counter }}
+                            </div>
+                            {% if item.is_correct %}
+                                <span class="result-badge correct">To'g'ri</span>
+                            {% else %}
+                                <span class="result-badge incorrect">Noto'g'ri</span>
+                            {% endif %}
+                        </div>
+                        <div class="question-text-result">
+                            {{ item.question.question_text }}
+                        </div>
+                        <ul class="options-list">
+                            <li><strong>A)</strong> {{ item.question.choice_a }}</li>
+                            <li><strong>B)</strong> {{ item.question.choice_b }}</li>
+                            <li><strong>C)</strong> {{ item.question.choice_c }}</li>
+                            <li><strong>D)</strong> {{ item.question.choice_d }}</li>
+                        </ul>
+                        <div class="user-answer {% if item.is_correct %}correct{% else %}incorrect{% endif %}">
+                            <strong>Sizning javobingiz:</strong>
+                            {% if item.user_answer %}
+                                {% if item.user_answer == "A" %}
+                                    {{ item.question.choice_a }}
+                                {% elif item.user_answer == "B" %}
+                                    {{ item.question.choice_b }}
+                                {% elif item.user_answer == "C" %}
+                                    {{ item.question.choice_c }}
+                                {% elif item.user_answer == "D" %}
+                                    {{ item.question.choice_d }}
+                                {% else %}
+                                    {{ item.user_answer }}
+                                {% endif %}
+                            {% else %}
+                                Javob berilmagan
+                            {% endif %}
+                        </div>
+                        <div class="correct-answer">
+                            <strong>To'g'ri javob:</strong>
+                            {% if item.question.correct_answer == "A" %}
+                                {{ item.question.choice_a }}
+                            {% elif item.question.correct_answer == "B" %}
+                                {{ item.question.choice_b }}
+                            {% elif item.question.correct_answer == "C" %}
+                                {{ item.question.choice_c }}
+                            {% elif item.question.correct_answer == "D" %}
+                                {{ item.question.choice_d }}
+                            {% else %}
+                                {{ item.question.correct_answer }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        Natijalar topilmadi.
+                    </div>
+                {% endif %}
+
+                <div style="text-align: center;">
+                    <a href="{% url 'test_list' %}" class="back-button">
+                        Barcha Testlarga Qaytish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Ta'lim Platformasi</p>
+        <div class="footer_widget wow fadeInRightBig">
+            <p>Andijon Davlat Tibbiyot Instituti</p>
+        </div>
+    </footer>
+</body>
+</html>

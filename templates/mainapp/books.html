@@ -1,0 +1,212 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitoblar to‘plami</title>
+    <link rel="stylesheet" href="{% static 'css/book.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f7f7f7;
+        }
+        .top-navbar {
+            background: #19a685;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .top-navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .top-navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .top-navbar a:hover,
+        .top-navbar a.active {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        .page-title {
+            text-align: center;
+            color: #0a3c26;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .test-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .test-section-card {
+            background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+            border-radius: 12px;
+            padding: 18px 25px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+        .test-section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .test-section-card button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .test-section-card button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+        .section-info {
+            font-size: 18px;
+            font-weight: bold;
+            flex: 1;
+            text-align: left;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .section-count {
+            font-size: 15px;
+            opacity: 0.9;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+            padding: 0 10px;
+        }
+        .test-section-card form {
+            flex: 0 0 auto;
+            margin: 0;
+        }
+        .category-section {
+            margin-bottom: 35px;
+        }
+        .category-title {
+            color: #0a3c26;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .category-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .empty-message {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            padding: 40px;
+        }
+        footer {
+            background: #40916c;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="top-navbar-content">
+<a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Bosh sahifa</a>
+<a href="{% url 'books' %}" class="{% if request.resolver_match.url_name == 'books' %}active{% endif %}">Kitoblar</a>
+<a href="{% url 'test_list' %}" class="{% if request.resolver_match.url_name == 'test_list' %}active{% endif %}">Testlar</a>        </div>
+    </div>
+<!--    <header>-->
+<!--        <nav class="navbar">-->
+<!--            <ul>-->
+<!--                <li><a href="{% url 'index' %}" class="active">Bosh sahifa</a></li>-->
+<!--                <li><a href="{% url 'books' %}" class="active">Kitoblar</a></li>-->
+<!--                <li><a href="{% url 'test_list' %}" class="active">Testlar</a></li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+<!--    </header>-->
+
+    <div class="container">
+        <h1>Kitoblar to‘plami</h1>
+
+        <form method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Kitob nomi..." value="{{ request.GET.q }}">
+            <button type="submit"><i class="fas fa-search"></i> Qidirish</button>
+        </form>
+
+        {% if books %}
+        <div class="document-list">
+            {% for book in books %}
+            <div class="document-item">
+                <div class="document-header">
+                    <a href="{{ book.file.url }}" target="_blank">{{ forloop.counter }}. {{ book.title }}</a>
+                    <a href="{{ book.file.url }}" class="download-btn" download><i class="fas fa-download"></i> Yuklab olish</a>
+                </div>
+                <p class="document-desc">
+                    {% if book.description %}
+                        {{ book.description|truncatewords:20 }}
+                    {% else %}
+                        Ushbu kitob haqida qo‘shimcha ma’lumot mavjud emas.
+                    {% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert-warning">Kitoblar topilmadi.</div>
+        {% endif %}
+
+
+    </div>
+
+</body>
+</html>

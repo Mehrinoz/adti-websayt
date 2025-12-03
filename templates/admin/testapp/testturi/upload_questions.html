@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Savollarni fayldan yuklash: {{ original }}</h1>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div class="submit-row">
+      <input type="submit" value="Yuklash" class="default">
+      <a href="{% url 'admin:testapp_testturi_change' original.pk %}" class="button cancel-link">
+        Bekor qilish
+      </a>
+    </div>
+  </form>
+{% endblock %}
+
+
+
+
+

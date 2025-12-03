@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+h1, h2 {
+    padding: 10px;
+    text-align: center;
+    color: #1B5E20;
+}
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.search-form input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px 0 0 8px;
+}
+.search-form button {
+    padding: 10px 20px;
+    background: #2E7D32;
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+}
+.search-form button:hover {
+    background: #1B5E20;
+}
+.document-list {
+    margin-top: 20px;
+}
+.document-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #C8E6C9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.document-header a {
+    text-decoration: none;
+    color: #1B5E20;
+    font-weight: bold;
+}
+.download-btn {
+    background: #7fb381;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.download-btn i {
+    margin-right: 5px;
+}
+.document-desc {
+    margin-top: 10px;
+    color: #555;
+    font-size: 0.95em;
+}
+.contact {
+    padding: 20px;
+    background: #A5D6A7;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+.contact p {
+    margin: 5px 0;
+}
+.navbar {
+    background: #539852;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+.navbar ul li {
+    margin: 0 15px;
+}
+.navbar ul li a {
+    color: #eff7ec;
+    text-decoration: none;
+    font-size: 18px;
+}
+.navbar ul li a:hover,
+.navbar ul li a.active {
+    color: #05390b;
+}
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ffeeba;
+    margin: 20px 0;
+    text-align: center;
+}

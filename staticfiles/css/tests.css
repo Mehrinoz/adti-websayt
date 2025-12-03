@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.card {
+    margin-bottom: 20px; /* Kartalar orasidagi bo'sh joy */
+}
+
+.card-title { /* Karta sarlavhasi stili */
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+

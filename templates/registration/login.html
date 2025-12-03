@@ -1,0 +1,30 @@
+{% extends 'mainapp/base_auth.html' %}
+{% load static %}
+{% block title %}Tizimga kirish{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>Tizimga kirish</h2>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Login:</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Parol:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            {% if form.errors %}
+            <div class="error-message">
+                Login yoki parol noto'g'ri!
+            </div>
+            {% endif %}
+            <button type="submit" class="auth-button">Kirish</button>
+        </form>
+        <div class="auth-links">
+            <p>Akkountingiz yo'qmi? <a href="{% url 'register' %}">Ro'yxatdan o'tish</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,7 @@
+{% extends 'mainapp/base_auth.html' %}
+{% load static %}
+{% block title %}Log out sahifasi{% endblock title %}
+{% block content %}
+    <h1>Web saxifadan chiqdingiz</h1>
+    <p>Siz logged out qildingiz <a href="{% url 'login' %}" class="btn btn-success">Qayta kirish</a></p>
+{% endblock %}

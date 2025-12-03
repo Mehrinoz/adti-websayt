@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Testlar - Andijon Davlat Tibbiyot Instituti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f7f7f7;
+        }
+        .top-navbar {
+            background: #19a685;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .top-navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .top-navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .top-navbar a:hover,
+        .top-navbar a.active {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        .page-title {
+            text-align: center;
+            color: #0a3c26;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .test-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .test-section-card {
+            background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+            border-radius: 12px;
+            padding: 18px 25px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+        .test-section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .test-section-card button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .test-section-card button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+        .section-info {
+            font-size: 18px;
+            font-weight: bold;
+            flex: 1;
+            text-align: left;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .section-count {
+            font-size: 15px;
+            opacity: 0.9;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+            padding: 0 10px;
+        }
+        .test-section-card form {
+            flex: 0 0 auto;
+            margin: 0;
+        }
+        .category-section {
+            margin-bottom: 35px;
+        }
+        .category-title {
+            color: #0a3c26;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .category-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .empty-message {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            padding: 40px;
+        }
+        footer {
+            background: #40916c;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="top-navbar-content">
+            <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Bosh sahifa</a>
+            <a href="{% url 'books' %}" {% if request.resolver_match.url_name == 'books' %}class="active"{% endif %}>Kitoblar</a>
+            <a href="{% url 'test_list' %}" {% if request.resolver_match.url_name == 'test_list' %}class="active"{% endif %}>Testlar</a>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="page-title">
+            📝 Testlar ro'yxati
+        </div>
+        
+        {% if category_entries %}
+            {% for item in category_entries %}
+                {% if item.groups %}
+                    <div class="category-section">
+                        <h2 class="category-title">
+                            {{ item.category.name }}
+                        </h2>
+                        {% if item.category.description %}
+                            <p class="category-description">
+                                {{ item.category.description }}
+                            </p>
+                        {% endif %}
+                        <div class="test-grid">
+                            {% for group in item.groups %}
+                            <div class="test-section-card">
+                                <div class="section-info">
+                                    Bo'lim {{ group.group_number }}
+                                </div>
+                                <div class="section-count">
+                                    {{ group.total }} ta savol
+                                </div>
+                                <form method="post" action="{% url 'start_test' item.category.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="group_number" value="{{ group.group_number }}">
+                                    <button type="submit">
+                                        Testni boshlash
+                                    </button>
+                                </form>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="empty-message">
+                Hozircha testlar mavjud emas.
+            </div>
+        {% endif %}
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Ta'lim Platformasi</p>
+        <p>Andijon Davlat Tibbiyot Instituti</p>
+    </footer>
+</body>
+</html>

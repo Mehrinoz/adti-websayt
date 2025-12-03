@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Andijon Davlat Tibbiyot Instituti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/css/auth.css' %}">
+    <style>
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 20px);
+            overflow: hidden;
+            margin: 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .slide-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .slide-btn {
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .slide-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.05);
+        }
+        .content {
+            padding: 20px;
+            height: calc(100vh - 20px);
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <footer class="top-footer">
+        <div class="footer_widget wow fadeInRightBig">
+            <h1>ANDIJON DAVLAT TIBBIYOT INSTITUTI</h1>
+        </div>
+    </footer>
+    <div class="container">
+        <div class="sidebar">
+            <header>
+                <div class="logo">
+                    <img src="{% static 'images/logo.png' %}" alt="Universitet logosi">
+                </div>
+                <h1>Davolash fakulteti</h1>
+            </header>
+            <nav>
+                <ul class="navbar-nav">
+                   {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="#" class="btn btn-outline-light nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Chiqish</a>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Bosh sahifa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'books' %}">Kitoblar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'test_list' %}">Testlar</a></li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a></li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light nav-link" href="{% url 'login' %}">Kirish</a>
+                    </li>
+                {% endif %}
+
+                </ul>
+            </nav>
+            <div class="social-icons">
+                <a href="https://t.me/adtiuz_rasmiy/" class="icon"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.youtube.com/@adtiagmiasmi" class="icon"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/adtiuz/" class="icon"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="slideshow-container">
+                <div class="slide active">
+                    <img src="https://avatars.mds.yandex.net/get-altay/14336229/2a0000019773ca642ba55e0381ad69290520/orig" alt="Slide 1">
+                </div>
+                <div class="slide">
+                    <img src="https://avatars.mds.yandex.net/get-altay/12595784/2a0000018f6b9b5a55d93ec581e4b596d071/orig" alt="Slide 2">
+                </div>
+                <div class="slide">
+                    <img src="https://upload.wikimedia.org/wikipedia/uz/thumb/e/e4/Andijon_Davlat_Tibbiyot_instituti_01.jpg/1200px-Andijon_Davlat_Tibbiyot_instituti_01.jpg" alt="Slide 3">
+                </div>
+                <div class="slide-controls">
+                    <button class="slide-btn" onclick="prevSlide()">Oldingi</button>
+                    <button class="slide-btn" onclick="nextSlide()">Keyingi</button>
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Ta'lim Platformasi</p>
+        <div class="footer_widget wow fadeInRightBig">
+            <p>Murojat uchun<a class="nav-link" href="https://t.me/D_e_v_e_l_o_p_er"> DASTURCHI</a></p>
+        </div>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, 3000);
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        // Start automatic slideshow
+        startSlideshow();
+
+        // Add event listeners for manual controls
+        document.querySelector('.slide-controls').addEventListener('mouseenter', stopSlideshow);
+        document.querySelector('.slide-controls').addEventListener('mouseleave', startSlideshow);
+
+        // Make functions globally available
+        window.nextSlide = nextSlide;
+        window.prevSlide = prevSlide;
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Savollar mavjud emas - Andijon Davlat Tibbiyot Instituti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f7f7f7;
+        }
+        .top-navbar {
+            background: #19a685;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .top-navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .top-navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .top-navbar a:hover,
+        .top-navbar a.active {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        .empty-content {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .empty-icon {
+            font-size: 64px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .empty-title {
+            color: #0a3c26;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .empty-message {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .back-button {
+            background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(25, 166, 133, 0.3);
+        }
+        footer {
+            background: #40916c;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="top-navbar-content">
+            <a href="{% url 'index' %}">Bosh sahifa</a>
+            <a href="{% url 'books' %}">Kitoblar</a>
+            <a href="{% url 'test_list' %}" class="active">Testlar</a>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="empty-content">
+            <div class="empty-icon">📭</div>
+            <h1 class="empty-title">Ushbu test turi uchun savollar topilmadi</h1>
+            <p class="empty-message">
+                Iltimos, admin panel orqali ushbu test turiga savollar qo'shing.
+            </p>
+            <a href="{% url 'test_list' %}" class="back-button">
+                Testlar ro'yxatiga qaytish
+            </a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Ta'lim Platformasi</p>
+        <p>Andijon Davlat Tibbiyot Instituti</p>
+    </footer>
+</body>
+</html>

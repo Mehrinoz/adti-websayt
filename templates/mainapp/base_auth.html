@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Ro'yxatdan o'tish{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+    <header class="auth-header">
+        <h1>ANDIJON DAVLAT TIBBIYOT INSTITUTI </h1>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Ta'lim Platformasi</p>
+        <div class="footer_widget wow fadeInRightBig">
+            <p>Andijon Davlat Tibbiyot Instituti </p>
+        </div>
+    </footer>
+</body>
+</html> 
