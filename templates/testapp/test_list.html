@@ -164,7 +164,8 @@
         <div class="top-navbar-content">
 <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Bosh sahifa</a>
 <a href="{% url 'books' %}" class="{% if request.resolver_match.url_name == 'books' %}active{% endif %}">Kitoblar</a>
-<a href="{% url 'test_list' %}" class="{% if request.resolver_match.url_name == 'test_list' %}active{% endif %}">Testlar</a>        </div>
+<a href="{% url 'test_list' %}" class="{% if request.resolver_match.url_name == 'test_list' %}active{% endif %}">Testlar</a>
+<a href="{% url 'practice_questions_list' %}" class="{% if request.resolver_match.url_name == 'practice_questions_list' or request.resolver_match.url_name == 'practice_question_detail' %}active{% endif %}">Savollar</a>        </div>
     </div>
     
     <div class="main-container">

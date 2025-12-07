@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Savol - Andijon Davlat Tibbiyot Instituti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f7f7f7;
+        }
+        .top-navbar {
+            background: #19a685;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .top-navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .top-navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .top-navbar a:hover,
+        .top-navbar a.active {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #19a685;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            color: #198251;
+        }
+        .question-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #19a685;
+        }
+        .question-title {
+            color: #0a3c26;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-size: 17px;
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .answer-form {
+            margin-top: 25px;
+        }
+        .answer-label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #0a3c26;
+            margin-bottom: 10px;
+        }
+        .answer-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Arial', sans-serif;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .answer-textarea:focus {
+            outline: none;
+            border-color: #19a685;
+        }
+        .check-btn {
+            background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(25, 166, 133, 0.3);
+        }
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(25, 166, 133, 0.4);
+        }
+        .result-section {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .user-answer-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .user-answer-label {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .user-answer-text {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .correct-answer-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .correct-answer-label {
+            font-weight: bold;
+            color: #155724;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .correct-answer-text {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .result-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .result-badge.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        footer {
+            background: #40916c;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="top-navbar-content">
+            <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Bosh sahifa</a>
+            <a href="{% url 'books' %}" class="{% if request.resolver_match.url_name == 'books' %}active{% endif %}">Kitoblar</a>
+            <a href="{% url 'test_list' %}" class="{% if request.resolver_match.url_name == 'test_list' %}active{% endif %}">Testlar</a>
+            <a href="{% url 'practice_questions_list' %}" class="{% if request.resolver_match.url_name == 'practice_questions_list' %}active{% endif %}">Savollar</a>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <a href="{% url 'practice_questions_list' %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Savollar ro'yxatiga qaytish
+        </a>
+        
+        <div class="question-section">
+            <div class="question-title">
+                <i class="fas fa-question-circle"></i> Savol
+            </div>
+            <div class="question-text">
+                {{ question.question_text }}
+            </div>
+            
+            {% if show_result %}
+                <div class="result-section">
+                    <div class="user-answer-box">
+                        <span class="user-answer-label">Sizning javobingiz:</span>
+                        <div class="user-answer-text">
+                            {{ user_answer|default:"Javob berilmagan" }}
+                        </div>
+                    </div>
+                    
+                    <div class="correct-answer-box">
+                        <span class="correct-answer-label">To'g'ri javob:</span>
+                        <div class="correct-answer-text">
+                            {{ question.correct_answer }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <form method="post" class="answer-form">
+                    {% csrf_token %}
+                    <label for="user_answer" class="answer-label">
+                        Javobingizni yozing:
+                    </label>
+                    <textarea 
+                        id="user_answer" 
+                        name="user_answer" 
+                        class="answer-textarea" 
+                        placeholder="Javobingizni bu yerga yozing..."
+                        required
+                    ></textarea>
+                    <button type="submit" class="check-btn">
+                        <i class="fas fa-check"></i> Javobni tekshirish
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Ta'lim Platformasi</p>
+        <p>Andijon Davlat Tibbiyot Instituti</p>
+    </footer>
+</body>
+</html>
+

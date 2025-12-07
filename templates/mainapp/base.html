@@ -89,9 +89,10 @@
                         </form>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Bosh sahifa</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'books' %}">Kitoblar</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'test_list' %}">Testlar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'practice_questions_list' %}">Savollar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'team' %}">Bizning jamoa</a></li>
                     {% if request.user.is_superuser %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a></li>
                     {% endif %}
@@ -110,6 +111,7 @@
             </div>
         </div>
         <div class="content">
+            {% if not request.resolver_match.url_name == 'team' %}
             <div class="slideshow-container">
                 <div class="slide active">
                     <img src="https://avatars.mds.yandex.net/get-altay/14336229/2a0000019773ca642ba55e0381ad69290520/orig" alt="Slide 1">
@@ -125,6 +127,7 @@
                     <button class="slide-btn" onclick="nextSlide()">Keyingi</button>
                 </div>
             </div>
+            {% endif %}
             {% block content %}{% endblock %}
         </div>
     </div>
@@ -167,8 +170,11 @@
         startSlideshow();
 
         // Add event listeners for manual controls
-        document.querySelector('.slide-controls').addEventListener('mouseenter', stopSlideshow);
-        document.querySelector('.slide-controls').addEventListener('mouseleave', startSlideshow);
+        const slideControls = document.querySelector('.slide-controls');
+        if (slideControls) {
+            slideControls.addEventListener('mouseenter', stopSlideshow);
+            slideControls.addEventListener('mouseleave', startSlideshow);
+        }
 
         // Make functions globally available
         window.nextSlide = nextSlide;

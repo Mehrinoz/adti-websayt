@@ -198,9 +198,10 @@
                             {% csrf_token %}
                         </form>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Bosh sahifa</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'books' %}">Kitoblar</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'test_list' %}">Testlar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'practice_questions_list' %}">Savollar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'team' %}">Bizning jamoa</a></li>
                     {% if request.user.is_superuser %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a></li>
                     {% endif %}
@@ -262,10 +263,10 @@
                             {{ item.question.question_text }}
                         </div>
                         <ul class="options-list">
-                            <li><strong>A)</strong> {{ item.question.choice_a }}</li>
-                            <li><strong>B)</strong> {{ item.question.choice_b }}</li>
-                            <li><strong>C)</strong> {{ item.question.choice_c }}</li>
-                            <li><strong>D)</strong> {{ item.question.choice_d }}</li>
+                            <li>{{ item.question.choice_a }}</li>
+                            <li>{{ item.question.choice_b }}</li>
+                            <li>{{ item.question.choice_c }}</li>
+                            <li>{{ item.question.choice_d }}</li>
                         </ul>
                         <div class="user-answer {% if item.is_correct %}correct{% else %}incorrect{% endif %}">
                             <strong>Sizning javobingiz:</strong>

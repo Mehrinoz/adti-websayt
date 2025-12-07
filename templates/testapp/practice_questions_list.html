@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Testni ishlash - Andijon Davlat Tibbiyot Instituti</title>
+    <title>Savollar - Andijon Davlat Tibbiyot Instituti</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/book.css' %}">
@@ -55,83 +55,72 @@
             box-sizing: border-box;
             overflow-x: hidden;
         }
-        .test-header {
+        .page-title {
             text-align: center;
             color: #0a3c26;
+            font-size: 28px;
+            font-weight: bold;
             margin-bottom: 30px;
         }
-        .test-header h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .test-header p {
-            font-size: 16px;
-            color: #666;
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         .question-card {
             background: white;
             border-radius: 12px;
             padding: 20px;
-            margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border-left: 4px solid #19a685;
-        }
-        .question-number {
-            color: #19a685;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .question-text {
-            font-size: 17px;
-            color: #0a3c26;
-            margin-bottom: 18px;
-            line-height: 1.6;
-        }
-        .option-item {
-            background: #f7f7f7;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
             transition: all 0.3s ease;
-        }
-        .option-item:hover {
-            background: #e8f5f3;
-            border-color: #19a685;
-        }
-        .option-item input[type="radio"] {
-            margin-right: 12px;
-            width: 18px;
-            height: 18px;
             cursor: pointer;
         }
-        .option-item label {
-            cursor: pointer;
-            font-size: 15px;
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-left-color: #198251;
+        }
+        .question-text-preview {
+            font-size: 16px;
             color: #0a3c26;
-            margin: 0;
-            display: flex;
-            align-items: center;
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
-        .submit-btn {
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .question-date {
+            font-size: 13px;
+            color: #666;
+        }
+        .view-btn {
             background: linear-gradient(135deg, #19a685 0%, #198251 100%);
             color: white;
             border: none;
-            padding: 14px 35px;
-            font-size: 17px;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: bold;
-            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: block;
-            margin: 25px auto 0;
-            box-shadow: 0 4px 15px rgba(25, 166, 133, 0.3);
+            text-decoration: none;
+            display: inline-block;
         }
-        .submit-btn:hover {
+        .view-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(25, 166, 133, 0.4);
+            box-shadow: 0 4px 12px rgba(25, 166, 133, 0.3);
+        }
+        .empty-message {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            padding: 40px;
         }
         footer {
             background: #40916c;
@@ -146,57 +135,41 @@
 <body>
     <div class="top-navbar">
         <div class="top-navbar-content">
-            <a href="{% url 'index' %}">Bosh sahifa</a>
-            <a href="{% url 'books' %}">Kitoblar</a>
-            <a href="{% url 'test_list' %}">Testlar</a>
-            <a href="{% url 'practice_questions_list' %}">Savollar</a>
+            <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Bosh sahifa</a>
+            <a href="{% url 'books' %}" class="{% if request.resolver_match.url_name == 'books' %}active{% endif %}">Kitoblar</a>
+            <a href="{% url 'test_list' %}" class="{% if request.resolver_match.url_name == 'test_list' %}active{% endif %}">Testlar</a>
+            <a href="{% url 'practice_questions_list' %}" class="{% if request.resolver_match.url_name == 'practice_questions_list' %}active{% endif %}">Savollar</a>
         </div>
     </div>
     
     <div class="main-container">
-        <div class="test-header">
-            <h2>Testni ishlash</h2>
-            <p>Savollar soni: {{ total_questions }}</p>
+        <div class="page-title">
+            📚 Amaliy Savollar
         </div>
         
-        <form method="post">
-            {% csrf_token %}
-            {% if question_entries %}
-                {% for entry in question_entries %}
+        {% if questions %}
+            <div class="questions-list">
+                {% for question in questions %}
                 <div class="question-card">
-                    <div class="question-number">
-                        Savol {{ entry.number }} / {{ total_questions }}
+                    <div class="question-text-preview">
+                        {{ question.question_text|truncatewords:30 }}
                     </div>
-                    <div class="question-text">
-                        {{ entry.question.question_text }}
-                    </div>
-                    <div>
-                        {% for option in entry.options %}
-                        <div class="option-item">
-                            <label>
-                                <input type="radio"
-                                       name="question_{{ entry.question.id }}"
-                                       value="{{ option.value }}"
-                                       {% if entry.selected == option.value %}checked{% endif %}>
-                                {{ option.text }}
-                            </label>
-                        </div>
-                        {% endfor %}
+                    <div class="question-meta">
+                        <span class="question-date">
+                            <i class="far fa-calendar"></i> {{ question.created_at|date:"d.m.Y" }}
+                        </span>
+                        <a href="{% url 'practice_question_detail' question.id %}" class="view-btn">
+                            Ko'rish <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
-            {% else %}
-                <div style="text-align: center; padding: 40px; color: #666;">
-                    Ushbu bo'lim uchun savollar topilmadi.
-                </div>
-            {% endif %}
-
-            {% if question_entries %}
-            <button type="submit" class="submit-btn">
-                Testni yakunlash
-            </button>
-            {% endif %}
-        </form>
+            </div>
+        {% else %}
+            <div class="empty-message">
+                Hozircha savollar mavjud emas.
+            </div>
+        {% endif %}
     </div>
     
     <footer>
@@ -205,3 +178,4 @@
     </footer>
 </body>
 </html>
+

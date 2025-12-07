@@ -165,6 +165,7 @@
             <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Bosh sahifa</a>
             <a href="{% url 'books' %}" {% if request.resolver_match.url_name == 'books' %}class="active"{% endif %}>Kitoblar</a>
             <a href="{% url 'test_list' %}" {% if request.resolver_match.url_name == 'test_list' %}class="active"{% endif %}>Testlar</a>
+            <a href="{% url 'practice_questions_list' %}" {% if request.resolver_match.url_name == 'practice_questions_list' or request.resolver_match.url_name == 'practice_question_detail' %}class="active"{% endif %}>Savollar</a>
         </div>
     </div>
     

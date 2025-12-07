@@ -123,9 +123,10 @@
                             {% csrf_token %}
                         </form>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Bosh sahifa</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'books' %}">Kitoblar</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'test_list' %}">Testlar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'practice_questions_list' %}">Savollar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'team' %}">Bizning jamoa</a></li>
                     {% if request.user.is_superuser %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a></li>
                     {% endif %}
@@ -168,7 +169,7 @@
                                                name="question_{{ entry.question.id }}"
                                                value="{{ option.value }}"
                                                {% if entry.selected == option.value %}checked{% endif %}>
-                                        <strong>{{ option.value }})</strong> {{ option.text }}
+                                        {{ option.text }}
                                     </label>
                                 </div>
                                 {% endfor %}

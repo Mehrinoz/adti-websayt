@@ -9,7 +9,7 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import path, reverse
 from django.utils.safestring import mark_safe
 
-from .models import Question, TestTuri
+from .models import Question, TestTuri, PracticeQuestion
 
 # Word (DOCX) fayllari uchun importni yanada ishonchli qilish
 try:
@@ -430,3 +430,12 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ("question_text", "category", "group_number", "correct_answer")
     list_filter = ("category", "group_number")
     search_fields = ("question_text",)
+
+
+@admin.register(PracticeQuestion)
+class PracticeQuestionAdmin(admin.ModelAdmin):
+    list_display = ("question_text", "created_at", "updated_at")
+    search_fields = ("question_text", "correct_answer")
+    list_filter = ("created_at",)
+    readonly_fields = ("created_at", "updated_at")
+    fields = ("question_text", "correct_answer", "created_at", "updated_at")

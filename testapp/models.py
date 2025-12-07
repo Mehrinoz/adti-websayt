@@ -124,3 +124,21 @@ class SessionQuestionOrder(models.Model):
 
     def __str__(self):
         return f"Order for Q{self.question.id} in Session {self.test_session.id}"
+
+
+# -------------------------------------------------------------------
+
+## Amaliy Savollar (Practice Questions)
+class PracticeQuestion(models.Model):
+    question_text = models.TextField(verbose_name='Savol matni')
+    correct_answer = models.TextField(verbose_name="To'g'ri javob")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Yaratilgan vaqti')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Yangilangan vaqti')
+
+    class Meta:
+        verbose_name = 'Amaliy savol'
+        verbose_name_plural = 'Amaliy savollar'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.question_text[:50]  # Savolning dastlabki 50 ta belgisini qaytarish

@@ -1,0 +1,232 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .team-container {
+        padding: 30px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .team-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .team-header h1 {
+        color: #0a3c26;
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .team-header p {
+        color: #666;
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    .team-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .team-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+    }
+    .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+    .team-photo-wrapper {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto 20px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .team-photo {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #19a685;
+        box-shadow: 0 5px 15px rgba(25, 166, 133, 0.3);
+        transition: all 0.3s ease;
+        display: block;
+        background: #f0f0f0;
+    }
+    .team-photo-container {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 5px solid #19a685;
+        box-shadow: 0 5px 15px rgba(25, 166, 133, 0.3);
+        overflow: hidden;
+        background: linear-gradient(135deg, #19a685 0%, #198251 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 48px;
+        font-weight: bold;
+    }
+    .team-card:hover .team-photo {
+        transform: scale(1.05);
+        border-color: #198251;
+    }
+    .team-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #0a3c26;
+        margin-bottom: 10px;
+    }
+    .team-position {
+        font-size: 16px;
+        color: #19a685;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .team-bio {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        min-height: 60px;
+    }
+    .team-contact {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+    .team-contact-item {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+        transition: all 0.3s ease;
+    }
+    .team-contact-item:hover {
+        background: #19a685;
+        transform: translateY(-3px);
+    }
+    .team-contact-item i {
+        font-size: 20px;
+        color: #19a685;
+        transition: color 0.3s ease;
+    }
+    .team-contact-item:hover i {
+        color: white;
+    }
+    .empty-team {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    .empty-team i {
+        font-size: 64px;
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+    .empty-team h2 {
+        color: #0a3c26;
+        margin-bottom: 10px;
+    }
+    @media (max-width: 768px) {
+        .team-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .team-header h1 {
+            font-size: 28px;
+        }
+        .team-photo-wrapper {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
+
+<div class="team-container">
+    <div class="team-header">
+        <h1><i class="fas fa-users"></i> Bizning Jamoa</h1>
+        <p>Bizning professional va tajribali jamoamiz sizga eng yaxshi xizmatni ko'rsatish uchun doimo tayyor</p>
+    </div>
+
+    {% if team_members %}
+        <div class="team-grid">
+            {% for member in team_members %}
+            <div class="team-card">
+                <div class="team-photo-wrapper">
+                    {% if member.photo %}
+                        <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="team-photo" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="team-photo-container" style="display: none;">
+                            {{ member.name|first|upper }}
+                        </div>
+                    {% else %}
+                        <div class="team-photo-container">
+                            {{ member.name|first|upper }}
+                        </div>
+                    {% endif %}
+                </div>
+                <h2 class="team-name">{{ member.name }}</h2>
+                <p class="team-position">{{ member.position }}</p>
+                {% if member.bio %}
+                    <p class="team-bio">{{ member.bio }}</p>
+                {% endif %}
+                <div class="team-contact">
+                    {% if member.telegram %}
+                        <a href="{{ member.telegram }}" target="_blank" class="team-contact-item" title="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    {% endif %}
+                    {% if member.instagram %}
+                        <a href="{{ member.instagram }}" target="_blank" class="team-contact-item" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    {% endif %}
+                    {% if member.gmail %}
+                        <a href="mailto:{{ member.gmail }}" class="team-contact-item" title="Gmail">
+                            <i class="fab fa-google"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-team">
+            <i class="fas fa-user-friends"></i>
+            <h2>Jamoa a'zolari hozircha mavjud emas</h2>
+            <p>Tez orada jamoamiz haqida ma'lumot qo'shiladi</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

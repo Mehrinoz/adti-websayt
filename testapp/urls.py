@@ -11,6 +11,8 @@ urlpatterns = [
         views.test_results,
         name="test_results",
     ),
+    path("savollar/", views.practice_questions_list, name="practice_questions_list"),
+    path("savollar/<int:question_id>/", views.practice_question_detail, name="practice_question_detail"),
 ]
 
 

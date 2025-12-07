@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Book
+from .models import Book, TeamMember
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
@@ -145,3 +145,9 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+# Team page
+def team_view(request):
+    team_members = TeamMember.objects.all()
+    return render(request, 'mainapp/team.html', {'team_members': team_members})

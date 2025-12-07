@@ -20,3 +20,23 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} profili "
+
+
+class TeamMember(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Ism')
+    position = models.CharField(max_length=200, verbose_name='Lavozim')
+    photo = models.ImageField(upload_to='team/', verbose_name='Rasm', blank=True, null=True)
+    bio = models.TextField(blank=True, verbose_name='Biografiya')
+    telegram = models.URLField(blank=True, verbose_name='Telegram link')
+    instagram = models.URLField(blank=True, verbose_name='Instagram link')
+    gmail = models.EmailField(blank=True, verbose_name='Gmail')
+    order = models.PositiveIntegerField(default=0, verbose_name='Tartib raqami')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Jamoa a\'zosi'
+        verbose_name_plural = 'Jamoa a\'zolari'
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f"{self.name} - {self.position}"

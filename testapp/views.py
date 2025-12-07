@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from .models import Question, TestSession, TestTuri, UserAnswer
+from .models import Question, TestSession, TestTuri, UserAnswer, PracticeQuestion
 
 
 @require_GET
@@ -230,5 +230,51 @@ def test_results(request: HttpRequest, test_session_id: int) -> HttpResponse:
             "wrong": wrong,
             "percentage": round(percentage, 2),
             "details": details,
+        },
+    )
+
+
+@require_GET
+def practice_questions_list(request: HttpRequest) -> HttpResponse:
+    """
+    /savollar/ - amaliy savollar ro'yxati.
+    """
+    questions = PracticeQuestion.objects.all().order_by("-created_at")
+    
+    return render(
+        request,
+        "testapp/practice_questions_list.html",
+        {"questions": questions},
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def practice_question_detail(request: HttpRequest, question_id: int) -> HttpResponse:
+    """
+    /savollar/<question_id>/ - savol detail va javob tekshirish.
+    """
+    question = get_object_or_404(PracticeQuestion, pk=question_id)
+    
+    user_answer = ""
+    is_correct = None
+    show_result = False
+    
+    if request.method == "POST":
+        user_answer = request.POST.get("user_answer", "").strip()
+        show_result = True
+        if user_answer:
+            # Javobni tekshirish (katta/kichik harflarni e'tiborsiz)
+            is_correct = user_answer.lower().strip() == question.correct_answer.lower().strip()
+        else:
+            is_correct = False
+    
+    return render(
+        request,
+        "testapp/practice_question_detail.html",
+        {
+            "question": question,
+            "user_answer": user_answer,
+            "is_correct": is_correct,
+            "show_result": show_result,
         },
     )
