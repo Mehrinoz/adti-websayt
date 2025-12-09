@@ -128,8 +128,23 @@ class SessionQuestionOrder(models.Model):
 
 # -------------------------------------------------------------------
 
+class Category(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Kategoriya nomi')
+    slug = models.SlugField(unique=True, verbose_name='Slug')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Yaratilgan vaqti')
+
+    class Meta:
+        verbose_name = 'Kategoriya'
+        verbose_name_plural = 'Kategoriyalar'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
 ## Amaliy Savollar (Practice Questions)
 class PracticeQuestion(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, 
+                               related_name='questions', verbose_name='Kategoriya')
     question_text = models.TextField(verbose_name='Savol matni')
     correct_answer = models.TextField(verbose_name="To'g'ri javob")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Yaratilgan vaqti')

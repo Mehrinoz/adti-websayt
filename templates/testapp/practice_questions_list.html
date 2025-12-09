@@ -67,6 +67,37 @@
             flex-direction: column;
             gap: 15px;
         }
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .category-item {
+            background: #f0f0f0;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid #ddd;
+        }
+        
+        .category-item:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        .category-item.active {
+            background: #19a685;
+            color: white;
+            border-color: #19a685;
+        }
+        
         .question-card {
             background: white;
             border-radius: 12px;
@@ -75,12 +106,31 @@
             border-left: 4px solid #19a685;
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
         }
         .question-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             border-left-color: #198251;
         }
+        .question-category {
+            font-size: 13px;
+            color: #19a685;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .question-category i {
+            font-size: 12px;
+        }
+        
+        .text-muted {
+            color: #6c757d;
+            font-style: italic;
+        }
+        
         .question-text-preview {
             font-size: 16px;
             color: #0a3c26;
@@ -147,12 +197,33 @@
             📚 Amaliy Savollar
         </div>
         
+        <!-- Category Filter -->
+        <div class="category-filter">
+            <a href="?" class="category-item {% if not current_category %}active{% endif %}">
+                Barcha savollar
+            </a>
+            {% for category in categories %}
+            <a href="?category={{ category.slug }}" class="category-item {% if current_category == category.slug %}active{% endif %}">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+        
         {% if questions %}
             <div class="questions-list">
                 {% for question in questions %}
                 <div class="question-card">
+                    {% if question.category %}
+                    <div class="question-category">
+                        <i class="fas fa-folder"></i> {{ question.category.name }}
+                    </div>
+                    {% endif %}
                     <div class="question-text-preview">
-                        {{ question.question_text|truncatewords:30 }}
+                        {% if question.question_text %}
+                            {{ question.question_text|truncatewords:30 }}
+                        {% else %}
+                            <span class="text-muted">Savol matni kiritilmagan</span>
+                        {% endif %}
                     </div>
                     <div class="question-meta">
                         <span class="question-date">

@@ -9,7 +9,7 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import path, reverse
 from django.utils.safestring import mark_safe
 
-from .models import Question, TestTuri, PracticeQuestion
+from .models import Question, TestTuri, PracticeQuestion, Category
 
 # Word (DOCX) fayllari uchun importni yanada ishonchli qilish
 try:
@@ -432,10 +432,19 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ("question_text",)
 
 
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'created_at')
+    prepopulated_fields = {'slug': ('name',)}
+    search_fields = ('name',)
+    ordering = ('name',)
+    list_per_page = 20
+
 @admin.register(PracticeQuestion)
 class PracticeQuestionAdmin(admin.ModelAdmin):
-    list_display = ("question_text", "created_at", "updated_at")
-    search_fields = ("question_text", "correct_answer")
-    list_filter = ("created_at",)
-    readonly_fields = ("created_at", "updated_at")
-    fields = ("question_text", "correct_answer", "created_at", "updated_at")
+    list_display = ('question_text', 'category', 'created_at', 'updated_at')
+    list_filter = ('category', 'created_at')
+    search_fields = ('question_text', 'correct_answer')
+    readonly_fields = ('created_at', 'updated_at')
+    fields = ('category', 'question_text', 'correct_answer', 'created_at', 'updated_at')
+    list_per_page = 20

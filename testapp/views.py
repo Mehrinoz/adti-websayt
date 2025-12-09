@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from .models import Question, TestSession, TestTuri, UserAnswer, PracticeQuestion
+from .models import Question, TestSession, TestTuri, UserAnswer, PracticeQuestion, Category
 
 
 @require_GET
@@ -239,12 +239,21 @@ def practice_questions_list(request: HttpRequest) -> HttpResponse:
     """
     /savollar/ - amaliy savollar ro'yxati.
     """
+    category_slug = request.GET.get('category')
     questions = PracticeQuestion.objects.all().order_by("-created_at")
+    categories = Category.objects.all()
+    
+    if category_slug:
+        questions = questions.filter(category__slug=category_slug)
     
     return render(
         request,
         "testapp/practice_questions_list.html",
-        {"questions": questions},
+        {
+            "questions": questions,
+            "categories": categories,
+            "current_category": category_slug
+        },
     )
 
 

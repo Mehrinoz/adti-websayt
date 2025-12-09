@@ -148,8 +148,7 @@
         <div class="top-navbar-content">
             <a href="{% url 'index' %}">Bosh sahifa</a>
             <a href="{% url 'books' %}">Kitoblar</a>
-            <a href="{% url 'test_list' %}">Testlar</a>
-            <a href="{% url 'practice_questions_list' %}">Savollar</a>
+            <a href="{% url 'test_list' %}" class="active">Testlar</a>
         </div>
     </div>
     
@@ -178,7 +177,7 @@
                                        name="question_{{ entry.question.id }}"
                                        value="{{ option.value }}"
                                        {% if entry.selected == option.value %}checked{% endif %}>
-                                {{ option.text }}
+                                <strong>{{ option.value }})</strong> {{ option.text }}
                             </label>
                         </div>
                         {% endfor %}
