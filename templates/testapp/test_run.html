@@ -176,8 +176,11 @@
                                 <input type="radio"
                                        name="question_{{ entry.question.id }}"
                                        value="{{ option.value }}"
+                                       id="option_{{ entry.question.id }}_{{ forloop.counter }}"
                                        {% if entry.selected == option.value %}checked{% endif %}>
-                                <strong>{{ option.value }})</strong> {{ option.text }}
+                                <label for="option_{{ entry.question.id }}_{{ forloop.counter }}">
+                                    {{ option.text }}
+                                </label>
                             </label>
                         </div>
                         {% endfor %}
